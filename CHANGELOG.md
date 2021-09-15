@@ -3,7 +3,7 @@
 ## EMISSARY-INGRESS and AMBASSADOR EDGE STACK
 
 Emissary-ingress is a Kubernatives-native, self-service, open-source API gateway
-and ingress controller. It is a CNCF Incubation project, formerly known as the 
+and ingress controller. It is a CNCF Incubation project, formerly known as the
 Ambassador API Gateway.
 
 Ambassador Edge Stack is a comprehensive, self-service solution for exposing,
@@ -20,7 +20,7 @@ The core of Ambassador Edge Stack is Emissary-ingress.
    - Developer onboarding assistance, including an API catalog, Swagger/OpenAPI documentation
      support, and a fully customizable developer portal.
 
-- Emissary-ingress can do everything that Ambassador Edge Stack can do, but you'll need to 
+- Emissary-ingress can do everything that Ambassador Edge Stack can do, but you'll need to
   write your own code to take advantage of the capabilities above.
 
 - Ambassador Edge Stack is free for all users: due to popular demand, Ambassador Edge Stack
@@ -87,6 +87,10 @@ installations, reduce memory footprint, and improve performance. We welcome feed
 ## Emissary-ingress
 
 - Feature: The environment variable `AES_LOG_LEVEL` now also sets the log level for the `diagd` logger.
+
+- Feature: The Agent environment variable `API_DOCS_POLLING_PERIOD` lets you control the frequency at which the Agent
+  will fetch API docs update from configured AmbassadorMappings. Default is `60s`.
+  Set to `0` to completely turn off API docs polling from the Agent.
 
 ## [2.0.2-ea] (2021-08-24)
 [2.0.2-ea]: https://github.com/emissary-ingress/emissary/releases/v2.0.2-ea
