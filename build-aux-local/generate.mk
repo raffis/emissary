@@ -12,15 +12,18 @@
 # This `go mod tidy` business only belongs in generate.mk because for the moment we're checking
 # 'vendor/' in to Git.
 
-go-mod-tidy/oss:
+go-mod-tidy:
+.PHONY: go-mod-tidy
+
+go-mod-tidy: go-mod-tidy/main
+go-mod-tidy/main:
 	rm -f $(OSS_HOME)/go.sum
 	cd $(OSS_HOME) && GOFLAGS=-mod=mod go mod tidy
 	cd $(OSS_HOME) && GOFLAGS=-mod=mod go mod vendor # make sure go.mod is complete, and re-gen go.sum
-	$(MAKE) go-mod-tidy/oss-evaluate
-go-mod-tidy/oss-evaluate:
+	$(MAKE) go-mod-tidy/main-evaluate
+go-mod-tidy/main-evaluate:
 	@echo '# evaluate $$(proto_path)'; # $(proto_path) # cause Make to call `go list STUFF`, which will maybe edit go.mod or go.sum
-go-mod-tidy: go-mod-tidy/oss
-.PHONY: go-mod-tidy/oss go-mod-tidy
+.PHONY: go-mod-tidy/main go-mod-tidy/main-evaluate
 
 #
 # The main `make generate` entrypoints and listings

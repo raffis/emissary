@@ -21,6 +21,15 @@ clobber: clobber-tools
 clobber-tools:
 	rm -rf $(tools.bindir) $(tools.dir)/include $(tools.dir)/downloads
 
+go-mod-tidy: $(patsubst $(tools.srcdir)/%/go.mod,go-mod-tidy/tools/%,$(wildcard $(tools.srcdir)/*/go.mod))
+
+.PHONY: go-mod-tidy/tools/%
+go-mod-tidy/tools/%:
+	rm -f $(tools.srcdir)/$*/go.sum
+	cd $(tools.srcdir)/$* && GOFLAGS=-mod=mod go mod tidy
+	cd $(tools.srcdir)/$* && GOFLAGS=-mod=mod go mod vendor
+	rm -rf $(tools.srcdir)/$*/vendor
+
 # Shell scripts
 # =============
 #
