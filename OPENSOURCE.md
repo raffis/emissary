@@ -27,6 +27,7 @@ following Free and Open Source software:
     github.com/cncf/udpa/go                                  v0.0.0-20210322005330-6414d713912e         Apache License 2.0
     github.com/datawire/dlib                                 v1.2.4-0.20210629021142-e221f3b9c3b8       Apache License 2.0
     github.com/datawire/dtest                                v0.0.0-20210927191556-2cccf1a938b0         Apache License 2.0
+    github.com/datawire/go-mkopensource                      v0.0.0-20210901210950-e7c9b5e549af         Apache License 2.0
     github.com/davecgh/go-spew                               v1.1.1                                     ISC license
     github.com/docker/spdystream                             v0.0.0-20160310174837-449fdfce4d96         Apache License 2.0
     github.com/ecodia/golang-awaitility                      v0.0.0-20180710094957-fb55e59708c7         MIT license

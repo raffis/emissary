@@ -2,12 +2,11 @@ package detectlicense
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 type License struct {
@@ -66,12 +65,18 @@ func DetectLicenses(files map[string][]byte) (map[License]struct{}, error) {
 	hasNonSPDXSource := false
 	hasPatents := false
 
+loop:
 	for filename, filebody := range files {
 
-		if filename == "github.com/miekg/dns/COPYRIGHT" {
+		switch filename {
+		case "github.com/miekg/dns/COPYRIGHT":
 			// This file identifies copyright holders, but
 			// the license info is in the LICENSE file.
-			continue
+			continue loop
+		case "sigs.k8s.io/kustomize/kyaml/LICENSE_TEMPLATE":
+			// This is a template file for generated code,
+			// not an actual license file.
+			continue loop
 		}
 
 		name := filepath.Base(filename)
@@ -87,7 +92,7 @@ func DetectLicenses(files map[string][]byte) (map[License]struct{}, error) {
 			strings.HasPrefix(name, "LICENSE"):
 			ls := IdentifyLicenses(filebody)
 			if ls == nil || len(ls) == 0 {
-				return nil, errors.Errorf("could not identify license in file %q", filename)
+				return nil, fmt.Errorf("could not identify license in file %q", filename)
 			}
 			if name == "LICENSE.docs" && len(ls) == 1 {
 				if _, isCc := ls[CcBySa40]; isCc {
@@ -156,7 +161,7 @@ func IdentifySPDXLicenses(body []byte) (map[License]struct{}, error) {
 		id = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(id), "*/"))
 		license, licenseOK := spdxIdentifiers[id]
 		if !licenseOK {
-			return nil, errors.Errorf("unknown SPDX identifier %q", id)
+			return nil, fmt.Errorf("unknown SPDX identifier %q", id)
 		}
 		licenses[license] = struct{}{}
 	}
@@ -259,8 +264,6 @@ func IdentifyLicenses(body []byte) map[License]struct{} {
 		licenses[ISC] = struct{}{}
 	case reMatch(reMIT, body):
 		licenses[MIT] = struct{}{}
-	case reMatch(reMIT2, body):
-		licenses[MIT] = struct{}{}
 	case reMatch(reMPL, body):
 		licenses[MPL2] = struct{}{}
 	case reMatch(reCcBySa40, body):
@@ -303,6 +306,9 @@ func IdentifyLicenses(body []byte) map[License]struct{} {
 		// sigs.k8s.io/yaml/LICENSE
 		licenses[MIT] = struct{}{}
 		licenses[BSD3] = struct{}{}
+	case reMatch(reCompile(reMIT.String()+`\s*- Based on \S*, which has the following license:\n"""\s*`+reMIT.String()+`\s*"""\s*`), body):
+		// github.com/shopspring/decimal/LICENSE
+		licenses[MIT] = struct{}{}
 	case string(body) == xzPublicDomain:
 		// github.com/xi2/xz/LICENSE
 		licenses[PublicDomain] = struct{}{}

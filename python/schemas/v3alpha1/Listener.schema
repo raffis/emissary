@@ -20,7 +20,7 @@
         },
         "apiVersion": {
             "enum": [
-                "getambassador.io/v3alpha1"
+                "getambassador.io/"
             ]
         },
         "generation": {

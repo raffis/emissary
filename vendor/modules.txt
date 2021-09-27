@@ -55,6 +55,8 @@ github.com/datawire/dlib/dlog
 github.com/datawire/dlib/dtime
 # github.com/datawire/dtest v0.0.0-20210927191556-2cccf1a938b0
 github.com/datawire/dtest
+# github.com/datawire/go-mkopensource v0.0.0-20210901210950-e7c9b5e549af
+github.com/datawire/go-mkopensource/pkg/detectlicense
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/docker/spdystream v0.0.0-20160310174837-449fdfce4d96
