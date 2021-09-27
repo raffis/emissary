@@ -33,6 +33,8 @@ runs:
       with:
         version: 'v1.19.12'
       name: "Install kubectl (v1.19.12)" # maybe not?
+    - name: Install Go
+      uses: ./.github/actions/setup-go
     - name: "Install and start k3d"
       shell: bash
       run: |
